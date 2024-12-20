@@ -1,0 +1,1 @@
+kubectl scale statefulsets database --replicas=5 -n qq3
