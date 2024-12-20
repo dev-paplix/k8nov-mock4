@@ -1,0 +1,109 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: local-path
+  hostPath:
+    path: /home/ubuntu
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc
+spec:
+  storageClassName: local-path
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      volumes:
+      - name: task-pv-storage
+        persistentVolumeClaim:
+          claimName: pvc
+
+      containers:
+      - name: nginx
+        image: nginx:latest
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd
+  labels:
+    app: httpd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: httpd
+  template:
+    metadata:
+      labels:
+        app: httpd
+    spec:
+      volumes:
+      - name: task-pv-storage
+        persistentVolumeClaim:
+          claimName: pvc
+
+      containers:
+      - name: httpd
+        image: httpd:latest
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      volumes:
+      - name: task-pv-storage
+        persistentVolumeClaim:
+          claimName: pvc
+
+      containers:
+      - name: postgres
+        image: postgres:12.20-bullseye

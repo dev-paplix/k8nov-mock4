@@ -1,0 +1,25 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: examinee
+  name: examinee  
+rules:
+- apiGroups: ["*"]                                  
+  resources: ["deployments"]
+  verbs: ["create", "get", "watch", "list"]
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: examinee
+  namespace: examinee
+subjects:
+- kind: User
+  name: examinee
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: examinee # this must match the name of the Role or ClusterRole you wish to bind to
+  apiGroup: rbac.authorization.k8s.io

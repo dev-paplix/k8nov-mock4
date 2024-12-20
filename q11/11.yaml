@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: realtime        
+  labels:
+    app: realtime
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: realtime
+  template:
+    metadata:
+      labels:
+        app: realtime
+    spec:
+      containers:
+      - name: redis
+        image: redis:latest
+        resources:
+          requests:
+            memory: "500Mi"
+            cpu: "0.5"
+          limits:
+            memory: "500Mi"
+            cpu: "0.5

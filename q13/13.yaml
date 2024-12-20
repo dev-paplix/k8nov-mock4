@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hashi
+  labels:
+    app: hashi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hashi
+  template:
+    metadata:
+      labels:
+        app: hashi
+    spec:
+      containers:
+      - name: hashi 
+        image: hashicorp/terraform
