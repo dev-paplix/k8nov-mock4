@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpine
+  namespace: qq9
+spec:
+  containers:
+  - name: alpine
+    image: alpine:edge
+    ports:
+    - containerPort: 80
+    command: ["sh", "-c", "while true; do echo 'Hello Alpine'; sleep 3; done"]

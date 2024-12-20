@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: terraform
+  namespace: qq7
+  labels:
+    app: terraform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: terraform
+  template:
+    metadata:
+      labels:
+        app: terraform
+    spec:
+      containers:
+      - name: terraform
+        image: hashicorp/terraform
+        ports:
+        - containerPort: 80
