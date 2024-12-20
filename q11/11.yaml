@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: realtime
+  name: realtime
+  namespace: qq6
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: realtime
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: realtime
+    spec:
+      containers:
+        - image: redis:latest
+          name: redis
+          resources:
+            limits:
+              memory: "500Mi"
+              cpu: "0.5"
+            requests:
+              memory: "500Mi"
+              cpu: "0.5"
+status: {}

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: dashboard
+  name: dashboard
+  namespace: qq5
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashboard
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: dashboard
+    spec:
+      containers:
+        - image: drupal:10.2.7-php8.2-fpm-bookworm
+          name: drupal
+          resources: {}
+status: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: dashboard
+  name: dashboard
+  namespace: qq5
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+  type: LoadBalancer
+  selector:
+    app: dashboard
+status:
+  loadBalancer: {}

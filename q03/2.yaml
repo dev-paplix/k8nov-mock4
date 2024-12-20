@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  creationTimestamp: null
+  labels:
+    app: database
+  name: database
+  namespace: qq3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: database
+    spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: database-pvc
+      containers:
+        - image: mongo
+          name: mongo
+          envFrom:
+            - configMapRef:
+                name: config
+            - secretRef:
+                name: secret
+          volumeMounts:
+            - mountPath: /etc/mongo
+              name: data
+        - image: mongo-express
+          name: mongo-express
+          envFrom:
+            - configMapRef:
+                name: config
+            - secretRef:
+                name: secret
+          resources: {}
+status: {}

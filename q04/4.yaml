@@ -1,0 +1,1 @@
+kubectl scale --replicas=5 statefulset.apps/database -n qq3

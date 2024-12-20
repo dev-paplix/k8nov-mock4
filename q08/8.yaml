@@ -1,0 +1,7 @@
+openssl genrsa -out examinee.key 2048
+openssl req -new -key examinee.key -out examinee.csr -subj "/CN=examinee"
+openssl x509 -req -in examinee.csr -CA /etc/ -CAkey /etc/ -CAcreateserial -out examinee.crt -days 100 
+
+kubectl config set-credentials examinee --client-certificate=examinee.crt --client-key=examinee.key
+kubectl config set-context examinee --cluster=kubernetes --user=examinee --namespace=examinee
+kubectl config use-context examinee

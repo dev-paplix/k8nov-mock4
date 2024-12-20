@@ -1,0 +1,40 @@
+kubectl create cm config --from-literal=ME_CONFIG_MONGODB_URL=mongodb://root:example@mongo:27017 -n qq3
+kubectl create secret generic secret --from-literal=MONGO_INITDB_ROOT_USERNAME=admin --from-literal=MONGO_INITDB_ROOT_PASSWORD=password --from-literal=ME_CONFIG_MONGODB_ADMINUSERNAME=admin --from-literal=ME_CONFIG_MONGODB_ADMINPASSWORD=password -n qq3
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  creationTimestamp: null
+  labels:
+    app: database
+  name: database
+  namespace: qq3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: database
+    spec:
+      containers:
+      - image: mongo
+        name: mongo
+        envFrom:
+          - configMapRef:
+              name: config
+          - secretRef:
+              name: secret
+      - image: mongo-express
+        name: mongo-express
+        envFrom:
+          - configMapRef:
+              name: config
+          - secretRef:
+              name: secret
+        resources: {}
+status: {}
